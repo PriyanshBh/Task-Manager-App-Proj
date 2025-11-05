@@ -1,8 +1,10 @@
-// src/app/api/auth/[...betterAuth]/route.ts
+import { toNextJsHandler } from "better-auth/next-js";
+import { auth } from "@/server/auth";
+
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-export const runtime = "nodejs"; // required for Prisma/BetterAuth on Vercel
 
-import { GET, POST } from "@/server/auth";
+const handler = toNextJsHandler(auth);
 
-// ✅ Safe re-export — Next.js won’t pre-render this because it's marked dynamic
-export { GET, POST };
+export const GET = handler;
+export const POST = handler;
