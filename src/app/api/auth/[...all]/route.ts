@@ -1,10 +1,21 @@
+// src/app/api/auth/[...all]/route.ts
 export const dynamic = "force-dynamic";
-export const runtime = "nodejs"; // Prisma/BetterAuth need Node runtime on Vercel
+export const runtime = "nodejs";
 
-import { toNextJsHandler } from "better-auth/next-js";
-import { auth } from "@/server/auth";
+import type { NextRequest } from "next/server";
 
-// Build the Next.js handlers here to avoid eager evaluation issues.
-const h = toNextJsHandler(auth);
-export const GET = h.GET;
-export const POST = h.POST;
+export async function GET(req: NextRequest) {
+  // defer imports to runtime
+  const { toNextJsHandler } = await import("better-auth/next-js");
+  const { auth } = await import("@/server/auth");
+  const h = toNextJsHandler(auth);
+  return h.GET(req);
+}
+
+export async function POST(req: NextRequest) {
+  // defer imports to runtime
+  const { toNextJsHandler } = await import("better-auth/next-js");
+  const { auth } = await import("@/server/auth");
+  const h = toNextJsHandler(auth);
+  return h.POST(req);
+}
