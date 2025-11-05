@@ -1,9 +1,12 @@
+export const dynamic = "force-dynamic";
+
 import { ThemeToggle } from "@/components/theme-toggle";
 import { TaskDashboard } from "@/features/tasks/task-dashboard";
 import { AuthScreen } from "@/features/auth/auth-screen";
-import { getServerSession } from "@/server/auth";
 
 export default async function HomePage() {
+  // lazy import inside function so it's not analyzed during build
+  const { getServerSession } = await import("@/server/auth");
   const session = await getServerSession();
 
   return (
